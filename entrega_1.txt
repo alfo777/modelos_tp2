@@ -1,0 +1,18 @@
+Impresión inicial:
+
++)  Mi impresión es que quizás la cuestión de este problema radica en descubrir bajo qué criterio deben agruparse las prendas. O sea, si debería priorizarse juntar las prendas tratando de acumular la mayor cantidad de prendas posibles con tiempos altos de lavado, pero quizás creando al final grupos de lavado más pequeños; o quizás armar grupos donde haya una sola prenda con tiempo alto pero varias prendas de tiempo bajo. Por ejemplo, ¿qué sería mejor? Formar un grupo cuyos tiempos de lavado son 9,9, donde hay pocas prendas pero se consumen dos prendas de tiempo de lavado alto, o formar un grupo cuyos tiempos de lavado son 9, 3, 3, 2, donde tengo mas prendas que el grupo anterior pero consumo más prendas de tiempo de lavado bajo
+
+Ideas de como lo vos a resolver:
+
++) Mi primera idea consiste en agrupar la ropa para cada lavado de tal forma que se formen grupos de lavado que tengan en cuenta el tiempo de lavado antes de la cantidad de ropa. Esto quiere decir que si por ejemplo tenemos un grupo de lavado con ropas cuyos tiempos son 10, 8, 6, 5 y supongamos que llega una prenda con un tiempo de 7 que es compatible con las dos primeras prendas pero no con las últimas entonces las dos últimas prendas sera removidas de este grupo y se insertará la que tiene un tiempo de 7. La idea es ir acumulando en grupos las prendas “más costosas” lo mejor posible. También, antes de agrupar, se ordenará la lista de prendas según sus tiempos de lavado, así las prendas más costosas podrán formar sus grupos más rápido. Esta primera solución puntuó un tiempo de 65 en el ranking, por lo que puede ser mejorada.
+
++) Luego de la solución anterior realice algunos ajustes en el algoritmo que implemente y logre una solución de 63 y luego una de 62 aunque básicamente la idea sigue siendo la misma que el caso anterior, no se agregó un criterio nuevo con respecto a la forma en que los grupos de lavado son creados, solamente se cambió la forma en que se iteran las prendas para formar el grupo. 
+
+
+Comentarios sobre cambios para mejorar lo que hice:
+
++) Con respecto a la solución obtenida si revisamos el ranking podemos ver que claramente puede todavía obtenerse una solución mejor. Una idea que había pensado es que se puede restringir la entrada de la prenda con tiempo de lavado alto si la suma de tiempo de todas la prendas a remover del grupo es más alta. O sea si tenemos un grupo cuyo tiempos de lavado son 9, 3, 5 y entra una prenda con tiempo 7 que no es compatible con las dos últimas prendas entonces esta última prenda es rechazada y el grupo sigue como está.
+
+Comentarios finales:
+
++) De momento la solución que presente puede mejorarse, si bien me gusta el hecho de poder armar grupos de ropas tratando de reunir la mayor cantidad posible de prendas de tiempo de lavado alto, aun parece que se puede mejorar más.
