@@ -27,7 +27,7 @@ class GarmentManager:
 
     def sortGarments(self):
         newList = []
-        self.garments=sorted(self.garments.items(), key=lambda x: x[1].washTime, reverse=True)
+        self.garments=sorted(self.garments.items(), key=lambda x: x[1].washTime, reverse=False)
         for g in self.garments:
             newList.append(g[1])
 
