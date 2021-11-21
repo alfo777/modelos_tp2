@@ -6,6 +6,8 @@ class GarmentManager:
 
     def __init__(self):
         self.garments = {}
+        self.garmentsDict = {}
+        self.garmentsDictAux = {}
         self.groups = []
 
 
@@ -17,21 +19,22 @@ class GarmentManager:
         for line in lines[::-1]:
             if line.startswith("n"):
                 n, nGarment, washTime = line.split(" ")
-                self.garments[int(nGarment)] = Garment(int(nGarment), int(washTime))
+                self.garmentsDict[int(nGarment)] = Garment(int(nGarment), int(washTime))
             
             elif line.startswith("e"):
                 e, nGarment, nGarmentIncampatible = line.split(" ")
-                self.garments[int(nGarment)].addIncompatibleGarment(int(nGarmentIncampatible))
+                self.garmentsDict[int(nGarment)].addIncompatibleGarment(int(nGarmentIncampatible))
 
 
 
     def sortGarments(self):
         newList = []
-        self.garments=sorted(self.garments.items(), key=lambda x: x[1].washTime, reverse=False)
+        self.garments=sorted(self.garmentsDict.items(), key=lambda x: x[1].washTime, reverse=False)
         for g in self.garments:
             newList.append(g[1])
 
         self.garments = newList
+        self.garmentsDictAux = self.garmentsDict.copy()
     
 
 
@@ -42,20 +45,21 @@ class GarmentManager:
             i += 1
             newGroup = self.createGroup(i)      
             self.groups.append(newGroup)
+
+        self.getTotalTime()
                 
 
+
     def createGroup(self, nro):
-        group = WashingGroup(nro)
-        pushOuts = []
+        group = WashingGroup(nro,self.garmentsDict,self.garmentsDictAux)
+        firstGarment = self.garments[-1]
+        group.addGament(firstGarment)
 
-        for garment in self.garments[::-1]:
-            pushOuts, result = group.addGament(garment)
-
-            if result:
-                self.garments.remove(garment)
-                            
-            self.garments.extend(pushOuts)
-        
+        addedGarments = group.addGarments()
+        print(group.garmentsInGroup)
+        for g in addedGarments:
+            self.garments.remove(g)
+            
         return group
 
 
@@ -73,6 +77,15 @@ class GarmentManager:
 
         resultFile.close()
 
+
+    def getTotalTime(self):
+        time = 0
+        isOk = True
+        for aGroup in self.groups:
+            print("grupo {} tiempo total: {} cantidad de elementos {}".format(aGroup.id,aGroup.getTotalTime(),len(aGroup.garmentsInGroup)))
+            time += aGroup.getTotalTime()
+            
+        print("tiempo total:", time)
         
     def washClothes(self):
         self.createGarments()

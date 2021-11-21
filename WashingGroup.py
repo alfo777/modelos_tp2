@@ -2,49 +2,103 @@
 
 class WashingGroup:
     
-    def __init__(self, id):
+    def __init__(self, id, garmentsDict, garmentsDictAux):
         self.garments = []
         self.id = id
+        self.dict = garmentsDict
+        self.auxDict = garmentsDictAux
+        self.allowed = set()
+        self.garmentsInGroup = set()
 
-    # "removes" contiene la lista de prendas que deben ser removidas del grupo
-    #  para insertar una prenda con tiempo de lavado mas alto que todas ellas
-    # hay que mencionar tambien que este metodo devuelve false si
-    # la prenda a agregar no pudo ser insertada, y true si la prenda si pudo ser agregada
-    # tambien devuelve la lista removes para que las prendas rechazadas vuelvan a ser evauluadas
-    # mas tarde para poder formar parte de un grupo
-    def addGament(self, newGarment):
-        incompativilities = []
-        removes = []
-        for i in range(len(self.garments)):
+    
+    def addGament(self, newGament):
+        self.garments.append(newGament)
+        del self.dict[newGament.nro]
+        self.garmentsInGroup.add(newGament.nro)
+        self.remainingGaments = set(self.dict.keys())
+        self.allowed = self.allowed.union(self.remainingGaments.difference(newGament.incompatibleGarments))
+    
+    
+    def addGarments(self):
+        
+        self.checkGarmentsLeft()
+       
+        return self.garments             
+
+
+    def checkGarmentsLeft(self):
+        goOn = True
+        while goOn:
+            nroBetterGament = -1
+            maxTime = -1
             
-            if ( self.areImcompatibles(self.garments[i],newGarment) and self.garments[i].washTime >= newGarment.washTime ):
-                if self.garments[i].nro == 1 and newGarment.nro==17:
-                    print("aqui 1")
+            for nro in self.allowed:
 
-                elif self.garments[i].nro == 17 and newGarment.nro==1:
-                    print("aqui 2")
+                if nro in self.garmentsInGroup:
+                    continue
+                    
+                elif self.canEnter(nro):
+                    if self.dict[nro].washTime > maxTime:
+                        maxTime = self.dict[nro].washTime
+                        nroBetterGament = nro
 
-                return [], False
+                    elif self.dict[nro].washTime == maxTime and self.isBetterOption(nro,nroBetterGament):
+                        nroBetterGament = nro
 
-            elif ( self.areImcompatibles(self.garments[i],newGarment) and self.garments[i].washTime < newGarment.washTime ):
-                if self.garments[i].nro == 1 and newGarment.nro==17:
-                    print("aqui 3")
-
-                elif self.garments[i].nro == 17 and newGarment.nro==1:
-                    print("aqui 4")
-                incompativilities.append(i)
+            if nroBetterGament == -1:
+                goOn = False
+            
+            else:
+                self.addGament(self.dict[nroBetterGament])
 
 
-        for i in incompativilities[::-1]:
-            aGarment = self.garments.pop(i)
-            removes.append(aGarment)
+    def isBetterOption(self, nro, actualNro):
+        
+        actualIncompatibilities = set()
+        newIncompatibilities = set()
+        incompatibilities = set()
+        actualTime = 0
+        newTime = 0
 
-        self.garments.append(newGarment)
+        for i in self.garmentsInGroup:
+            if i != nro and i != actualNro:
+                incompatibilities = incompatibilities.union(self.auxDict[i].incompatibleGarments)
 
-        return removes, True
+        actualIncompatibilities = incompatibilities.union(self.auxDict[actualNro].incompatibleGarments)
+        newIncompatibilities = incompatibilities.union(self.auxDict[nro].incompatibleGarments)
+
+        if len(newIncompatibilities) < len(actualIncompatibilities):
+            return True
+
+        for i in newIncompatibilities:
+            newTime += self.auxDict[i].washTime
+        
+        for i in actualIncompatibilities:
+            actualTime += self.auxDict[i].washTime
+
+        return (newTime > actualTime)
+    
+
+
+    def canEnter(self, nro):
+        for garment in self.garments:
+            if self.areImcompatibles(garment,self.dict[nro]):
+                return False
+        
+        return True
+
 
     def areImcompatibles(self,aGarment, anotherGarment):
         return (aGarment.isIncompatible(anotherGarment) or anotherGarment.isIncompatible(aGarment))
+    
+
+    def getTotalTime(self):
+        time = 0
+        for aGarment in self.garments:
+            if time < aGarment.washTime:
+                time = aGarment.washTime
+        
+        return time
 
     
     def getGarments(self):
