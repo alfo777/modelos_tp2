@@ -56,7 +56,6 @@ class GarmentManager:
         group.addGament(firstGarment)
 
         addedGarments = group.addGarments()
-        print(group.garmentsInGroup)
         for g in addedGarments:
             self.garments.remove(g)
             
@@ -82,7 +81,6 @@ class GarmentManager:
         time = 0
         isOk = True
         for aGroup in self.groups:
-            print("grupo {} tiempo total: {} cantidad de elementos {}".format(aGroup.id,aGroup.getTotalTime(),len(aGroup.garmentsInGroup)))
             time += aGroup.getTotalTime()
             
         print("tiempo total:", time)

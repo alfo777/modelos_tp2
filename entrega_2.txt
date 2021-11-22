@@ -1,2 +1,16 @@
-485 ==> 512
-485 ==> 482
+Ideas de cómo van a resolver esta instancia:
+
+*) Idea 1: Mi primera idea es probar el algoritmo del tp 1 para poder ver cómo se desempeña. Una vez hecho esto primero voy a aplicar la situación de mejora que propuse en el primer tp para poder mejorar el algoritmo. Esta consiste en que si una nueva prenda debe entrar al grupo de lavado porque tiene un tiempo de lavado mayor a las prendas que son incompatibles a esta, si la suma total de tiempo de lavado de todas las prendas que van a salir es mayor que el tiempo de lavada de la prenda que va a entrar entonces dicha prenda no entrará al grupo y el algoritmo seguirá su ejecución evaluando otra prenda.
+
+*) Idea 2: No pude encontrar formas de mejorar el algoritmo del trabajo práctico número 1, al final opte por pensar un nuevo algoritmo. El nuevo algoritmo consiste en ingresar una prenda al grupo de lavado vacío, por cada prenda que ingrese se va a calcular el conjunto de prendas que son candidatas a entrar en el grupo, o sea que no son incompatibles con ninguna prenda del grupo (se calcula como la diferencia del conjunto de prendas que no tienen grupo aun con la unión del conjunto de prendas incompatibles de cada prenda del grupo. Para todas las prendas que tienen permitido entrar al grupo y aun no lo están va a elegir aquella con el tiempo de lavado más alto. Si existen dos prendas con el tiempo máximo entonces se va a elegir aquella que agregue la menor cantidad de incompatibilidades al grupo, si el empate persiste se calcula el tiempo total de lavado que todas las prendas incompatibles a todas las prendas del grupo hasta el momento acumulan si se agregara al grupo alguna de las prendas y se elige la prenda que consiga un tiempo mayor. Luego se repite al algoritmo hasta que ya no puedan entrar prendas al grupo. Con eso el grupo está terminado y se creará uno nuevo donde se repetirá el proceso antes dicho
+
+Comentarios sobre los cambios que hagan en el código a medida que intentan mejorar el resultado:
+
+*) Una vez corrido el algoritmo de la primera entrega logre una puntuación de 485 en el ranking, esto puede mejorarse aún. La idea 1 no probó ser mejor que el algoritmo original, logró una puntuación de 512. Trataré de pensar una mejor alternativa para mejorar el algoritmo.
+
+*) La idea 2 logró una puntuación de 468 en el ranking, si bien es una mejora con respecto de la idea 1 el algoritmo todavía está muy lejos de la puntuación actual máxima del ranking (270). Quizás para mejorarla se podría encontrar una mejor forma de agregar las prendas al grupo, tal vez por un criterio que no sea el tiempo de lavado de cada prenda.
+
+Comentarios Finales:
+
+*) A pesar de superar mi puntuación inicial, el algoritmo final tiene mucho para mejorar. Quizás este problema ayuda a demostrar cómo el desempeño de un algoritmo cambia cuando la magnitud de problema aumenta: yo en el primer tp logre una puntuación de 62, no era el óptimo pero se acercaba bastante, en cambio en el segundo tp, con más prendas para procesar, el algoritmo propuesto daba una solución alejada del óptimo. Tal vez lo mejor hubiera sido pensar un algoritmo con un enfoque distinto al de la idea 1 y 2 y apuntar a generar la menor cantidad de grupos posibles buscando una forma de resolverlo como problema lineal.
+
